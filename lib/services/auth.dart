@@ -7,6 +7,8 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  User get user => _auth.currentUser!;
+
   Future<bool> signInWithGoogle(BuildContext context) async {
     bool res = false;
     try {
@@ -15,7 +17,7 @@ class AuthService {
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
       final OAuthCredential _credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken, idToken: googleUser?.id);
+          accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
       UserCredential userCredential =
           await _auth.signInWithCredential(_credential);
       User? user = userCredential.user;
