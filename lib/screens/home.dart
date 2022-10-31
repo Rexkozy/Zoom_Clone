@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:zoom_clone_app/constants.dart';
+import 'package:zoom_clone_app/screens/history.dart';
 import 'package:zoom_clone_app/screens/meeting.dart';
+import 'package:zoom_clone_app/services/auth.dart';
+import 'package:zoom_clone_app/widgets/logoutbutton.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,6 +18,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> pages = [
     MeetingScreen(),
+    const HistoryScreen(),
+    const Center(
+      child: Text("Contacts"),
+    ),
+    LogOutButton(
+        text: "Logout",
+        onPressed: () {
+          AuthService().signOut();
+        }),
   ];
 
   @override
@@ -31,12 +43,13 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: pages[_page],
       bottomNavigationBar: BottomNavigationBar(
-        
           backgroundColor: footerColor,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.grey,
           onTap: (val) {
-            _page = val;
+            setState(() {
+              _page = val;
+            });
           },
           currentIndex: _page,
           type: BottomNavigationBarType.fixed,
